@@ -1,0 +1,49 @@
+version: 2
+tables:
+- table:
+    schema: public
+    name: tag
+  object_relationships:
+  - name: todo
+    using:
+      foreign_key_constraint_on: todo_id
+- table:
+    schema: public
+    name: todo
+  array_relationships:
+  - name: tags
+    using:
+      foreign_key_constraint_on:
+        column: todo_id
+        table:
+          schema: public
+          name: tag
+  insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - is_completed
+      - title
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - is_completed
+      - title
+      - created_at
+      - updated_at
+      - id
+      filter: {}
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - is_completed
+      - title
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: user
+    permission:
+      filter: {}

@@ -1,0 +1,709 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+# expression to compare columns of type Boolean. All fields are combined with logical 'AND'.
+input Boolean_comparison_exp {
+  _eq: Boolean
+  _gt: Boolean
+  _gte: Boolean
+  _in: [Boolean!]
+  _is_null: Boolean
+  _lt: Boolean
+  _lte: Boolean
+  _neq: Boolean
+  _nin: [Boolean!]
+}
+
+# mutation root
+type mutation_root {
+  # delete data from the table: "tag"
+  delete_tag(
+    # filter the rows which have to be deleted
+    where: tag_bool_exp!
+  ): tag_mutation_response
+
+  # delete single row from the table: "tag"
+  delete_tag_by_pk(id: uuid!): tag
+
+  # delete data from the table: "todo"
+  delete_todo(
+    # filter the rows which have to be deleted
+    where: todo_bool_exp!
+  ): todo_mutation_response
+
+  # delete single row from the table: "todo"
+  delete_todo_by_pk(id: uuid!): todo
+
+  # insert data into the table: "tag"
+  insert_tag(
+    # the rows to be inserted
+    objects: [tag_insert_input!]!
+
+    # on conflict condition
+    on_conflict: tag_on_conflict
+  ): tag_mutation_response
+
+  # insert a single row into the table: "tag"
+  insert_tag_one(
+    # the row to be inserted
+    object: tag_insert_input!
+
+    # on conflict condition
+    on_conflict: tag_on_conflict
+  ): tag
+
+  # insert data into the table: "todo"
+  insert_todo(
+    # the rows to be inserted
+    objects: [todo_insert_input!]!
+
+    # on conflict condition
+    on_conflict: todo_on_conflict
+  ): todo_mutation_response
+
+  # insert a single row into the table: "todo"
+  insert_todo_one(
+    # the row to be inserted
+    object: todo_insert_input!
+
+    # on conflict condition
+    on_conflict: todo_on_conflict
+  ): todo
+
+  # update data of the table: "tag"
+  update_tag(
+    # sets the columns of the filtered rows to the given values
+    _set: tag_set_input
+
+    # filter the rows which have to be updated
+    where: tag_bool_exp!
+  ): tag_mutation_response
+
+  # update single row of the table: "tag"
+  update_tag_by_pk(
+    # sets the columns of the filtered rows to the given values
+    _set: tag_set_input
+    pk_columns: tag_pk_columns_input!
+  ): tag
+
+  # update data of the table: "todo"
+  update_todo(
+    # sets the columns of the filtered rows to the given values
+    _set: todo_set_input
+
+    # filter the rows which have to be updated
+    where: todo_bool_exp!
+  ): todo_mutation_response
+
+  # update single row of the table: "todo"
+  update_todo_by_pk(
+    # sets the columns of the filtered rows to the given values
+    _set: todo_set_input
+    pk_columns: todo_pk_columns_input!
+  ): todo
+}
+
+# column ordering options
+enum order_by {
+  # in the ascending order, nulls last
+  asc
+
+  # in the ascending order, nulls first
+  asc_nulls_first
+
+  # in the ascending order, nulls last
+  asc_nulls_last
+
+  # in the descending order, nulls first
+  desc
+
+  # in the descending order, nulls first
+  desc_nulls_first
+
+  # in the descending order, nulls last
+  desc_nulls_last
+}
+
+# query root
+type query_root {
+  # fetch data from the table: "tag"
+  tag(
+    # distinct select on columns
+    distinct_on: [tag_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tag_order_by!]
+
+    # filter the rows returned
+    where: tag_bool_exp
+  ): [tag!]!
+
+  # fetch aggregated fields from the table: "tag"
+  tag_aggregate(
+    # distinct select on columns
+    distinct_on: [tag_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tag_order_by!]
+
+    # filter the rows returned
+    where: tag_bool_exp
+  ): tag_aggregate!
+
+  # fetch data from the table: "tag" using primary key columns
+  tag_by_pk(id: uuid!): tag
+
+  # fetch data from the table: "todo"
+  todo(
+    # distinct select on columns
+    distinct_on: [todo_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [todo_order_by!]
+
+    # filter the rows returned
+    where: todo_bool_exp
+  ): [todo!]!
+
+  # fetch aggregated fields from the table: "todo"
+  todo_aggregate(
+    # distinct select on columns
+    distinct_on: [todo_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [todo_order_by!]
+
+    # filter the rows returned
+    where: todo_bool_exp
+  ): todo_aggregate!
+
+  # fetch data from the table: "todo" using primary key columns
+  todo_by_pk(id: uuid!): todo
+}
+
+# expression to compare columns of type String. All fields are combined with logical 'AND'.
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+  _ilike: String
+  _in: [String!]
+  _is_null: Boolean
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+  _nilike: String
+  _nin: [String!]
+  _nlike: String
+  _nsimilar: String
+  _similar: String
+}
+
+# subscription root
+type subscription_root {
+  # fetch data from the table: "tag"
+  tag(
+    # distinct select on columns
+    distinct_on: [tag_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tag_order_by!]
+
+    # filter the rows returned
+    where: tag_bool_exp
+  ): [tag!]!
+
+  # fetch aggregated fields from the table: "tag"
+  tag_aggregate(
+    # distinct select on columns
+    distinct_on: [tag_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tag_order_by!]
+
+    # filter the rows returned
+    where: tag_bool_exp
+  ): tag_aggregate!
+
+  # fetch data from the table: "tag" using primary key columns
+  tag_by_pk(id: uuid!): tag
+
+  # fetch data from the table: "todo"
+  todo(
+    # distinct select on columns
+    distinct_on: [todo_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [todo_order_by!]
+
+    # filter the rows returned
+    where: todo_bool_exp
+  ): [todo!]!
+
+  # fetch aggregated fields from the table: "todo"
+  todo_aggregate(
+    # distinct select on columns
+    distinct_on: [todo_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [todo_order_by!]
+
+    # filter the rows returned
+    where: todo_bool_exp
+  ): todo_aggregate!
+
+  # fetch data from the table: "todo" using primary key columns
+  todo_by_pk(id: uuid!): todo
+}
+
+# columns and relationships of "tag"
+type tag {
+  id: uuid!
+  name: String!
+
+  # An object relationship
+  todo: todo!
+  todo_id: uuid!
+}
+
+# aggregated selection of "tag"
+type tag_aggregate {
+  aggregate: tag_aggregate_fields
+  nodes: [tag!]!
+}
+
+# aggregate fields of "tag"
+type tag_aggregate_fields {
+  count(columns: [tag_select_column!], distinct: Boolean): Int
+  max: tag_max_fields
+  min: tag_min_fields
+}
+
+# order by aggregate values of table "tag"
+input tag_aggregate_order_by {
+  count: order_by
+  max: tag_max_order_by
+  min: tag_min_order_by
+}
+
+# input type for inserting array relation for remote table "tag"
+input tag_arr_rel_insert_input {
+  data: [tag_insert_input!]!
+  on_conflict: tag_on_conflict
+}
+
+# Boolean expression to filter rows from the table "tag". All fields are combined with a logical 'AND'.
+input tag_bool_exp {
+  _and: [tag_bool_exp]
+  _not: tag_bool_exp
+  _or: [tag_bool_exp]
+  id: uuid_comparison_exp
+  name: String_comparison_exp
+  todo: todo_bool_exp
+  todo_id: uuid_comparison_exp
+}
+
+# unique or primary key constraints on table "tag"
+enum tag_constraint {
+  # unique or primary key constraint
+  tag_pkey
+}
+
+# input type for inserting data into table "tag"
+input tag_insert_input {
+  id: uuid
+  name: String
+  todo: todo_obj_rel_insert_input
+  todo_id: uuid
+}
+
+# aggregate max on columns
+type tag_max_fields {
+  id: uuid
+  name: String
+  todo_id: uuid
+}
+
+# order by max() on columns of table "tag"
+input tag_max_order_by {
+  id: order_by
+  name: order_by
+  todo_id: order_by
+}
+
+# aggregate min on columns
+type tag_min_fields {
+  id: uuid
+  name: String
+  todo_id: uuid
+}
+
+# order by min() on columns of table "tag"
+input tag_min_order_by {
+  id: order_by
+  name: order_by
+  todo_id: order_by
+}
+
+# response of any mutation on the table "tag"
+type tag_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [tag!]!
+}
+
+# input type for inserting object relation for remote table "tag"
+input tag_obj_rel_insert_input {
+  data: tag_insert_input!
+  on_conflict: tag_on_conflict
+}
+
+# on conflict condition type for table "tag"
+input tag_on_conflict {
+  constraint: tag_constraint!
+  update_columns: [tag_update_column!]!
+  where: tag_bool_exp
+}
+
+# ordering options when selecting data from "tag"
+input tag_order_by {
+  id: order_by
+  name: order_by
+  todo: todo_order_by
+  todo_id: order_by
+}
+
+# primary key columns input for table: "tag"
+input tag_pk_columns_input {
+  id: uuid!
+}
+
+# select columns of table "tag"
+enum tag_select_column {
+  # column name
+  id
+
+  # column name
+  name
+
+  # column name
+  todo_id
+}
+
+# input type for updating data in table "tag"
+input tag_set_input {
+  id: uuid
+  name: String
+  todo_id: uuid
+}
+
+# update columns of table "tag"
+enum tag_update_column {
+  # column name
+  id
+
+  # column name
+  name
+
+  # column name
+  todo_id
+}
+
+scalar timestamptz
+
+# expression to compare columns of type timestamptz. All fields are combined with logical 'AND'.
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+
+# columns and relationships of "todo"
+type todo {
+  created_at: timestamptz!
+  id: uuid!
+  is_completed: Boolean!
+
+  # An array relationship
+  tags(
+    # distinct select on columns
+    distinct_on: [tag_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tag_order_by!]
+
+    # filter the rows returned
+    where: tag_bool_exp
+  ): [tag!]!
+
+  # An aggregated array relationship
+  tags_aggregate(
+    # distinct select on columns
+    distinct_on: [tag_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tag_order_by!]
+
+    # filter the rows returned
+    where: tag_bool_exp
+  ): tag_aggregate!
+  title: String!
+  updated_at: timestamptz!
+}
+
+# aggregated selection of "todo"
+type todo_aggregate {
+  aggregate: todo_aggregate_fields
+  nodes: [todo!]!
+}
+
+# aggregate fields of "todo"
+type todo_aggregate_fields {
+  count(columns: [todo_select_column!], distinct: Boolean): Int
+  max: todo_max_fields
+  min: todo_min_fields
+}
+
+# order by aggregate values of table "todo"
+input todo_aggregate_order_by {
+  count: order_by
+  max: todo_max_order_by
+  min: todo_min_order_by
+}
+
+# input type for inserting array relation for remote table "todo"
+input todo_arr_rel_insert_input {
+  data: [todo_insert_input!]!
+  on_conflict: todo_on_conflict
+}
+
+# Boolean expression to filter rows from the table "todo". All fields are combined with a logical 'AND'.
+input todo_bool_exp {
+  _and: [todo_bool_exp]
+  _not: todo_bool_exp
+  _or: [todo_bool_exp]
+  created_at: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  is_completed: Boolean_comparison_exp
+  tags: tag_bool_exp
+  title: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+# unique or primary key constraints on table "todo"
+enum todo_constraint {
+  # unique or primary key constraint
+  todo_pkey
+}
+
+# input type for inserting data into table "todo"
+input todo_insert_input {
+  created_at: timestamptz
+  id: uuid
+  is_completed: Boolean
+  tags: tag_arr_rel_insert_input
+  title: String
+  updated_at: timestamptz
+}
+
+# aggregate max on columns
+type todo_max_fields {
+  created_at: timestamptz
+  id: uuid
+  title: String
+  updated_at: timestamptz
+}
+
+# order by max() on columns of table "todo"
+input todo_max_order_by {
+  created_at: order_by
+  id: order_by
+  title: order_by
+  updated_at: order_by
+}
+
+# aggregate min on columns
+type todo_min_fields {
+  created_at: timestamptz
+  id: uuid
+  title: String
+  updated_at: timestamptz
+}
+
+# order by min() on columns of table "todo"
+input todo_min_order_by {
+  created_at: order_by
+  id: order_by
+  title: order_by
+  updated_at: order_by
+}
+
+# response of any mutation on the table "todo"
+type todo_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [todo!]!
+}
+
+# input type for inserting object relation for remote table "todo"
+input todo_obj_rel_insert_input {
+  data: todo_insert_input!
+  on_conflict: todo_on_conflict
+}
+
+# on conflict condition type for table "todo"
+input todo_on_conflict {
+  constraint: todo_constraint!
+  update_columns: [todo_update_column!]!
+  where: todo_bool_exp
+}
+
+# ordering options when selecting data from "todo"
+input todo_order_by {
+  created_at: order_by
+  id: order_by
+  is_completed: order_by
+  tags_aggregate: tag_aggregate_order_by
+  title: order_by
+  updated_at: order_by
+}
+
+# primary key columns input for table: "todo"
+input todo_pk_columns_input {
+  id: uuid!
+}
+
+# select columns of table "todo"
+enum todo_select_column {
+  # column name
+  created_at
+
+  # column name
+  id
+
+  # column name
+  is_completed
+
+  # column name
+  title
+
+  # column name
+  updated_at
+}
+
+# input type for updating data in table "todo"
+input todo_set_input {
+  created_at: timestamptz
+  id: uuid
+  is_completed: Boolean
+  title: String
+  updated_at: timestamptz
+}
+
+# update columns of table "todo"
+enum todo_update_column {
+  # column name
+  created_at
+
+  # column name
+  id
+
+  # column name
+  is_completed
+
+  # column name
+  title
+
+  # column name
+  updated_at
+}
+
+scalar uuid
+
+# expression to compare columns of type uuid. All fields are combined with logical 'AND'.
+input uuid_comparison_exp {
+  _eq: uuid
+  _gt: uuid
+  _gte: uuid
+  _in: [uuid!]
+  _is_null: Boolean
+  _lt: uuid
+  _lte: uuid
+  _neq: uuid
+  _nin: [uuid!]
+}
+

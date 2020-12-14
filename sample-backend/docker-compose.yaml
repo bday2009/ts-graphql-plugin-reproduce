@@ -1,0 +1,27 @@
+version: '3.6'
+services:
+  postgres:
+    image: postgres:12
+    restart: always
+    volumes:
+    - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+  graphql-engine:
+    image: hasura/graphql-engine:v1.3.3
+    ports:
+    - "8080:8080"
+    depends_on:
+    - "postgres"
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "false" # set to "false" to disable console
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      ## uncomment next line to set an admin secret
+      HASURA_GRAPHQL_ADMIN_SECRET: topsecret
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+      HASURA_GRAPHQL_JWT_SECRET: '{"type": "RS512", "key": "-----BEGIN CERTIFICATE-----\nMIIDBzCCAe+gAwIBAgIJBPTP6hwACiJeMA0GCSqGSIb3DQEBCwUAMCExHzAdBgNV\nBAMTFmRldi0xOHp0ejR2ei5hdXRoMC5jb20wHhcNMjAwMzMxMTgyMDQ3WhcNMzMx\nMjA4MTgyMDQ3WjAhMR8wHQYDVQQDExZkZXYtMTh6dHo0dnouYXV0aDAuY29tMIIB\nIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw+SgL2OspR0XIVE1LMXuVY/l\nlySw1VeW9fjskjV/Eqtp+i7GsaDNRtsaJwJu7cmvWVyCgHJC9qIXOUKCcST56VBs\nqR2tIYdz+w1ZPrUGcuvZkfBAuFCUM2JtAItYdNo2gOaF+7Dg/iW5xLZUQVTET8vW\n2yBsQhA8dtLRJZ7+w1WXrVj3vk+rdiWP8Aiqxb6DddJQV993qVmZlGPttGjYHXss\n5vx8SUkD9Skub8n20VG202ihWBcHH3SmhNRPFPriP6Uq0yfzCJkHeSw8SGDV6t/B\nqlqLocIZvAhTM+e+aYlQKnbmDr/fDkWEaxlMRQf19VFv3onvEv8HKT8cH+6U1wID\nAQABo0IwQDAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSaGiQ1HBoDLIigQUOG\npquMfsriFTAOBgNVHQ8BAf8EBAMCAoQwDQYJKoZIhvcNAQELBQADggEBAJ/hrS8y\n+8I+OCNd7Ic7eLSMdTqbsps/XIYbHyiy99CoRmX9X7RcxKHughH6SnGtMMl9yisA\nNGyxffzpDOb5Eao65a/3hQZMrZ4XtAInbDvh/wzVWC2I9XoMpGr7g0svzHNtwb1d\ndMfNJlc3nCCxwVSOweLeusQlALUOsJ5IVkLFlKAvpWSO1h1SipBq0qV7GI77KYLt\nr13aGlyVnNsiwcHPGdp9X3svI8ORLO7Xjgc8FjENIi+P12N7d8vEITkeDqnFdLJf\namylwG88kVWfI+wOh5zj/1NDnHpyPrI7xFYDDg71PsrKKbHjY5/AwTIK5ywHZkpL\nUpvxHfLa8FFTwrM=\n-----END CERTIFICATE-----"}'
+      HASURA_GRAPHQL_ENABLE_TELEMETRY: "false"
+volumes:
+  db_data:

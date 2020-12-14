@@ -1,0 +1,6 @@
+- args:
+    relationship: todo
+    table:
+      name: tag
+      schema: public
+  type: drop_relationship

@@ -1,0 +1,8 @@
+- args:
+    name: todo
+    table:
+      name: tag
+      schema: public
+    using:
+      foreign_key_constraint_on: todo_id
+  type: create_object_relationship
